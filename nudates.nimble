@@ -1,7 +1,7 @@
 # Package Information
-version = "0.1.1"
+version = "0.1.0"
 author = "Georges Kayo de Kayo"
-description = "Easter date calculation engine."
+description = "Some useful tools when working with dates."
 license = "MIT"
 srcDir = "src"
 

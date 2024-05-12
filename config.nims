@@ -8,9 +8,9 @@ const
   binDir = "./bin"
   tstDir = "./tst"
   docDir = "./docs"
-  mainfile = srcDir.joinPath("easter.nim")
+  mainfile = srcDir.joinPath("nudates.nim")
   runTestsTasks = "runTests"
-  gitUrl = "https://github.com/GeK2K/easter.git"
+  gitUrl = "https://github.com/GeK2K/nudates.git"
 
 
 # procs
@@ -32,8 +32,8 @@ proc  runNimDoc() =
   echo "====================================="
   echo "Start of task:  document generation.."
   echo "====================================="
-  exec "nim  doc  --project  --index:on  " &
-       fmt"""--outdir:{docDir}  --git.url:{gitUrl}  {mainfile}""""
+  exec fmt"""nim  doc  --project  --index:on  --outdir:{docDir}  {mainfile}""""
+       # fmt"""--outdir:{docDir}  --git.url:{gitUrl}  {mainfile}""""
   exec fmt"""nim  buildindex  -o:{docDir}/index.html  {docDir}""""
   echo "==========="
   echo "End of task"
@@ -88,10 +88,11 @@ What task(s) do you want to accomplish?
         nimCompilation(options = "", comment = "Nim compilation in default mode..")
       elif c == "2":
         nimCompilation(options = "-d:release", comment = "Nim compilation in release mode..")
-      elif c == "3": 
+      elif c == "3":
+        echo "No tests to run !!"
         # execution of the 'runTests' task defined in the './tst/config.nims' file
-        withDir tstDir:
-          selfExec runTestsTasks
+        #withDir tstDir:
+        #  selfExec runTestsTasks
       elif c == "4":
         runNimDoc()
       else:
