@@ -101,7 +101,7 @@ type
     ]##
     month: Month 
     monthday: MonthdayRange
-    zone: TimeZone
+    zone: Option[TimeZone]
 
 
 proc  month*(mmd: MonthMonthday): Month {.inline.} = mmd.month
@@ -110,12 +110,13 @@ proc  month*(mmd: MonthMonthday): Month {.inline.} = mmd.month
 proc  monthday*(mmd: MonthMonthday): MonthdayRange {.inline.} = mmd.monthday
   ## Returns the `monthday` of the `mmd` object.
 
-proc  timeZone*(mmd: MonthMonthday): TimeZone {.inline.} = mmd.zone
+proc  timeZone*(mmd: MonthMonthday): Option[TimeZone] {.inline.} = mmd.zone
   ## Returns the `time zone` of the `mmd` object.
 
 
 proc  newMonthMonthday*(month: Month, monthday: MonthdayRange,
-                        zone: TimeZone = local()): MonthMonthday =
+                        zone: Option[TimeZone] = none(TimeZone)): 
+                       MonthMonthday =
   ##[
   Returns a new object of type `MonthMonthday <#MonthMonthday>`_.
 
@@ -130,13 +131,13 @@ proc  newMonthMonthday*(month: Month, monthday: MonthdayRange,
     (month == mNov and monthday <= 30) or (month == mDec and monthday <= 31)
     ```
   ]##
-  doAssert:  (month == mJan and monthday <= 31) or
-    (month == mFeb and monthday <= 29) or (month == mMar and monthday <= 31) or
-    (month == mApr and monthday <= 30) or (month == mMay and monthday <= 31) or
-    (month == mJun and monthday <= 30) or (month == mJul and monthday <= 31) or
-    (month == mAug and monthday <= 31) or (month == mSep and monthday <= 30) or
-    (month == mOct and monthday <= 31) or (month == mNov and monthday <= 30) or
-    (month == mDec and monthday <= 31)
+  doAssert:
+    (month == mJan and monthday <= 31) or (month == mFeb and monthday <= 29) or 
+    (month == mMar and monthday <= 31) or (month == mApr and monthday <= 30) or 
+    (month == mMay and monthday <= 31) or (month == mJun and monthday <= 30) or 
+    (month == mJul and monthday <= 31) or (month == mAug and monthday <= 31) or 
+    (month == mSep and monthday <= 30) or (month == mOct and monthday <= 31) or 
+    (month == mNov and monthday <= 30) or (month == mDec and monthday <= 31)
   result = MonthMonthday(month: month, monthday: monthday, zone: zone)
 
 
@@ -148,8 +149,9 @@ proc  cmpDate*(dt1, dt2: MonthMonthday): int =
 
   **Assertions:**
     - `doAssert <https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring>`_:  
-      `dt1.timeZone == dt2.timeZone`
+      `dt1.zone.isNone or dt2.zone.isNone or get(dt1.zone) == get(dt2.zone)`
   ]##
+
   runnableExamples:
     let dt1 = newMonthMonthday(mMay, 15.MonthdayRange)
     let dt2 = newMonthMonthday(mMay, 20.MonthdayRange)
@@ -161,7 +163,9 @@ proc  cmpDate*(dt1, dt2: MonthMonthday): int =
     doAssert:  dt2.cmpDate(dt3) == -1
     doAssert:  dt3.cmpDate(dt2) ==  1
 
-  doAssert:  dt1.zone == dt2.zone
+  doAssert:  
+    dt1.zone.isNone or dt2.zone.isNone or get(dt1.zone) == get(dt2.zone)
+
   if  dt1.month.ord < dt2.month.ord:  return -1
   elif  dt1.month.ord > dt2.month.ord:  return 1
   # From now on:  dt1.month.ord == dt2.month.ord
@@ -192,6 +196,7 @@ proc  cmpDate*(dt1, dt2: DateTime): int =
     doAssert:  dt3  > dt1  and  dt3.cmpDate(dt1) ==  1
 
   doAssert: dt1.timeZone == dt2.timeZone
+
   if (dt1.year, dt1.month.ord, dt1.monthday) == 
        (dt2.year, dt2.month.ord, dt2.monthday):  return 0
   elif  dt1 < dt2:  return -1
@@ -200,18 +205,18 @@ proc  cmpDate*(dt1, dt2: DateTime): int =
 
 proc  cmpDate*(dt1: DateTime, dt2: MonthMonthday): int {.inline.} = 
   ##[ 
-  Compares `dt1` and `dt2` ignoring `dt1.year` and
-  intraday information (hours, minutes, seconds, etc.).
+  Compares `dt1` and `dt2` ignoring `dt1.year` and intraday
+  information of `dt1` (hours, minutes, seconds, etc.).
 
   **Implementation:**
     ```nim
-    newMonthMonthday(dt1.month, dt1.monthday, dt1.timeZone).cmpDate(dt2)
+    newMonthMonthday(dt1.month, dt1.monthday, some(dt1.timeZone)).cmpDate(dt2)
     ```
 
   **See also:**
     - `cmpDate <#cmpDate,MonthMonthday,MonthMonthday>`_
   ]##
-  newMonthMonthday(dt1.month, dt1.monthday, dt1.timeZone).cmpDate(dt2)
+  newMonthMonthday(dt1.month, dt1.monthday, some(dt1.timeZone)).cmpDate(dt2)
 
 
 template  cmpDate*(dt1: MonthMonthday, dt2: DateTime): untyped =
@@ -238,11 +243,24 @@ proc  cmpDateNoZero*(dt1: DateTime | MonthMonthday,
       dates from sequences of strictly increasing dates.
 
   **Assertions:**
-    - `doAssert <https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring>`_:  
-      `dt1.timeZone == dt2.timeZone`
+  ```nim
+  when dt1 is DateTime and dt2 is DateTime:
+    doAssert:  
+      dt1.timeZone == dt2.timeZone
+  elif dt1 is DateTime and dt2 is MonthMonthday:
+    doAssert:
+      dt2.timeZone.isNone or dt1.timeZone == get(dt2.timeZone)
+  elif dt2 is DateTime and dt1 is MonthMonthday:
+    doAssert:
+      dt1.timeZone.isNone or dt2.timeZone == get(dt1.timeZone)
+  else:  # dt1 is MonthMonthday and dt2 is MonthMonthday
+    doAssert:
+      dt1.zone.isNone or dt2.zone.isNone or get(dt1.zone) == get(dt2.zone)  
+  ```
 
   **See also:**
     - `cmpDate <#cmpDate,DateTime,DateTime>`_
+    - `doAssert <https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring>`_
   ]##
 
   runnableExamples:
@@ -268,7 +286,19 @@ proc  cmpDateNoZero*(dt1: DateTime | MonthMonthday,
     doAssert:  [dt1, dt2, dt3].isSorted(cmpDate)
     doAssert:  not [dt1, dt2, dt3].isSorted(cmpDateNoZero)
 
-  doAssert: dt1.timeZone == dt2.timeZone
+  when dt1 is DateTime and dt2 is DateTime:
+    doAssert:  
+      dt1.timeZone == dt2.timeZone
+  elif dt1 is DateTime and dt2 is MonthMonthday:
+    doAssert:
+      dt2.timeZone.isNone or dt1.timeZone == get(dt2.timeZone)
+  elif dt2 is DateTime and dt1 is MonthMonthday:
+    doAssert:
+      dt1.timeZone.isNone or dt2.timeZone == get(dt1.timeZone)
+  else:  # dt1 is MonthMonthday and dt2 is MonthMonthday
+    doAssert:
+      dt1.zone.isNone or dt2.zone.isNone or get(dt1.zone) == get(dt2.zone)
+
   result = if dt1.cmpDate(dt2) == -1: -1 else: 1
 
 
@@ -561,15 +591,13 @@ func  searchMonthday*(year: int, month: Month, weekday: Weekday,
   **Returns:** 
     - The n-th occurence of `<weekday>` in the month  
       that is defined by parameters `month` and `year`.
-    - `none(MonthdayRange)` if the search is unsuccessful.
+    - `none(MonthdayRange)` if the search is unsuccessful
+      (this is particularly the case if 
+      `nthOccurence == 0 or abs(nthOccurrence) > 5`).
 
   **Notes:**
     - If `nthOccurrence > 0` then counting is performed from the beginning of the month.
     - If `nthOccurrence < 0` then counting is performed from the end of the month.
-  
-  **Assertions:**
-    - `doAssert <https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring>`_:  
-      `0 < abs(nthOccurrence) < 6`
   ]##
   
   runnableExamples:
@@ -587,7 +615,8 @@ func  searchMonthday*(year: int, month: Month, weekday: Weekday,
     doAssert:  searchMonthday(2023, mAug, dSat, -1).get == 26.MonthdayRange
     doAssert:  searchMonthday(2023, mAug, dSat, -3).get == 12.MonthdayRange
 
-  doAssert: nthOccurrence != 0 and abs(nthOccurrence) < 6
+  if nthOccurrence == 0 or abs(nthOccurrence) > 5:
+    return none(MonthdayRange)
 
   let weekday1st = getDayOfWeek(1.MonthdayRange, month, year)
   let daysInMonth = getDaysInMonth(month, year)

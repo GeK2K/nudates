@@ -94,7 +94,9 @@
 
 </ul>
 <ul class="simple nested-toc-section">newMonthMonthday
-  <li><a class="reference" href="#newMonthMonthday%2CMonth%2CMonthdayRange%2CTimezone" title="newMonthMonthday(month: Month; monthday: MonthdayRange; zone: Timezone = local()): MonthMonthday">newMonthMonthday(month: Month; monthday: MonthdayRange; zone: Timezone = local()): MonthMonthday</a></li>
+  <li><a class="reference" href="#newMonthMonthday%2CMonth%2CMonthdayRange%2COption%5BTimezone%5D" title="newMonthMonthday(month: Month; monthday: MonthdayRange;
+                 zone: Option[Timezone] = none(Timezone)): MonthMonthday">newMonthMonthday(month: Month; monthday: MonthdayRange;
+                 zone: Option[Timezone] = none(Timezone)): MonthMonthday</a></li>
 
 </ul>
 <ul class="simple nested-toc-section">searchMonthday
@@ -104,7 +106,7 @@
 
 </ul>
 <ul class="simple nested-toc-section">timeZone
-  <li><a class="reference" href="#timeZone%2CMonthMonthday" title="timeZone(mmd: MonthMonthday): Timezone">timeZone(mmd: MonthMonthday): Timezone</a></li>
+  <li><a class="reference" href="#timeZone%2CMonthMonthday" title="timeZone(mmd: MonthMonthday): Option[Timezone]">timeZone(mmd: MonthMonthday): Option[Timezone]</a></li>
 
 </ul>
 
@@ -261,7 +263,7 @@
     
     <p>Compares <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span></span></tt> and <tt class="docutils literal"><span class="pre"><span class="Identifier">dt2</span></span></tt>.</p>
 <p><strong>Assertions:</strong></p>
-<ul class="simple"><li><a class="reference external" href="https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring">doAssert</a>: <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">timeZone</span> <span class="Operator">==</span> <span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">timeZone</span></span></tt></li>
+<ul class="simple"><li><a class="reference external" href="https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring">doAssert</a>: <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">zone</span><span class="Operator">.</span><span class="Identifier">isNone</span> <span class="Keyword">or</span> <span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">zone</span><span class="Operator">.</span><span class="Identifier">isNone</span> <span class="Keyword">or</span> <span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">zone</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">zone</span><span class="Punctuation">)</span></span></tt></li>
 </ul>
 
 <p><strong class="examples_text">Example:</strong></p>
@@ -282,10 +284,10 @@
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    <p>Compares <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span></span></tt> and <tt class="docutils literal"><span class="pre"><span class="Identifier">dt2</span></span></tt> ignoring <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">year</span></span></tt> and intraday information (hours, minutes, seconds, etc.).</p>
+    <p>Compares <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span></span></tt> and <tt class="docutils literal"><span class="pre"><span class="Identifier">dt2</span></span></tt> ignoring <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">year</span></span></tt> and intraday information of <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span></span></tt> (hours, minutes, seconds, etc.).</p>
 <p><strong>Implementation:</strong></p>
 <p><pre class="listing">
-<span class="Identifier">newMonthMonthday</span><span class="Punctuation">(</span><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">month</span><span class="Punctuation">,</span> <span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">monthday</span><span class="Punctuation">,</span> <span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">timeZone</span><span class="Punctuation">)</span><span class="Operator">.</span><span class="Identifier">cmpDate</span><span class="Punctuation">(</span><span class="Identifier">dt2</span><span class="Punctuation">)</span></pre></p>
+<span class="Identifier">newMonthMonthday</span><span class="Punctuation">(</span><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">month</span><span class="Punctuation">,</span> <span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">monthday</span><span class="Punctuation">,</span> <span class="Identifier">some</span><span class="Punctuation">(</span><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">timeZone</span><span class="Punctuation">)</span><span class="Punctuation">)</span><span class="Operator">.</span><span class="Identifier">cmpDate</span><span class="Punctuation">(</span><span class="Identifier">dt2</span><span class="Punctuation">)</span></pre></p>
 <p><strong>See also:</strong></p>
 <ul class="simple"><li><a class="reference external" href="#cmpDate,MonthMonthday,MonthMonthday">cmpDate</a></li>
 </ul>
@@ -308,10 +310,22 @@
 <li>This <tt class="docutils literal"><span class="pre"><span class="Keyword">proc</span></span></tt> can help differentiate sequences of increasing dates from sequences of strictly increasing dates.</li>
 </ul>
 <p><strong>Assertions:</strong></p>
-<ul class="simple"><li><a class="reference external" href="https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring">doAssert</a>: <tt class="docutils literal"><span class="pre"><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">timeZone</span> <span class="Operator">==</span> <span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">timeZone</span></span></tt></li>
-</ul>
+<p><pre class="listing">
+<span class="Keyword">when</span> <span class="Identifier">dt1</span> <span class="Keyword">is</span> <span class="Identifier">DateTime</span> <span class="Keyword">and</span> <span class="Identifier">dt2</span> <span class="Keyword">is</span> <span class="Identifier">DateTime</span><span class="Punctuation">:</span>
+  <span class="Identifier">doAssert</span><span class="Punctuation">:</span>
+    <span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">timeZone</span> <span class="Operator">==</span> <span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">timeZone</span>
+<span class="Keyword">elif</span> <span class="Identifier">dt1</span> <span class="Keyword">is</span> <span class="Identifier">DateTime</span> <span class="Keyword">and</span> <span class="Identifier">dt2</span> <span class="Keyword">is</span> <span class="Identifier">MonthMonthday</span><span class="Punctuation">:</span>
+  <span class="Identifier">doAssert</span><span class="Punctuation">:</span>
+    <span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">timeZone</span><span class="Operator">.</span><span class="Identifier">isNone</span> <span class="Keyword">or</span> <span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">timeZone</span> <span class="Operator">==</span> <span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">timeZone</span><span class="Punctuation">)</span>
+<span class="Keyword">elif</span> <span class="Identifier">dt2</span> <span class="Keyword">is</span> <span class="Identifier">DateTime</span> <span class="Keyword">and</span> <span class="Identifier">dt1</span> <span class="Keyword">is</span> <span class="Identifier">MonthMonthday</span><span class="Punctuation">:</span>
+  <span class="Identifier">doAssert</span><span class="Punctuation">:</span>
+    <span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">timeZone</span><span class="Operator">.</span><span class="Identifier">isNone</span> <span class="Keyword">or</span> <span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">timeZone</span> <span class="Operator">==</span> <span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">timeZone</span><span class="Punctuation">)</span>
+<span class="Keyword">else</span><span class="Punctuation">:</span>  <span class="Comment"># dt1 is MonthMonthday and dt2 is MonthMonthday</span>
+  <span class="Identifier">doAssert</span><span class="Punctuation">:</span>
+    <span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">zone</span><span class="Operator">.</span><span class="Identifier">isNone</span> <span class="Keyword">or</span> <span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">zone</span><span class="Operator">.</span><span class="Identifier">isNone</span> <span class="Keyword">or</span> <span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">dt1</span><span class="Operator">.</span><span class="Identifier">zone</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">dt2</span><span class="Operator">.</span><span class="Identifier">zone</span><span class="Punctuation">)</span></pre></p>
 <p><strong>See also:</strong></p>
 <ul class="simple"><li><a class="reference external" href="#cmpDate,DateTime,DateTime">cmpDate</a></li>
+<li><a class="reference external" href="https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring">doAssert</a></li>
 </ul>
 
 <p><strong class="examples_text">Example:</strong></p>
@@ -409,10 +423,10 @@
 
 </div>
 <div id="newMonthMonthday-procs-all">
-  <div id="newMonthMonthday,Month,MonthdayRange,Timezone">
-  <dt><pre><span class="Keyword">proc</span> <a href="#newMonthMonthday%2CMonth%2CMonthdayRange%2CTimezone"><span class="Identifier">newMonthMonthday</span></a><span class="Other">(</span><span class="Identifier">month</span><span class="Other">:</span> <span class="Identifier">Month</span><span class="Other">;</span> <span class="Identifier">monthday</span><span class="Other">:</span> <span class="Identifier">MonthdayRange</span><span class="Other">;</span>
-                      <span class="Identifier">zone</span><span class="Other">:</span> <span class="Identifier">Timezone</span> <span class="Other">=</span> <span class="Identifier">local</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <a href="nudates.html#MonthMonthday"><span class="Identifier">MonthMonthday</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <div id="newMonthMonthday,Month,MonthdayRange,Option[Timezone]">
+  <dt><pre><span class="Keyword">proc</span> <a href="#newMonthMonthday%2CMonth%2CMonthdayRange%2COption%5BTimezone%5D"><span class="Identifier">newMonthMonthday</span></a><span class="Other">(</span><span class="Identifier">month</span><span class="Other">:</span> <span class="Identifier">Month</span><span class="Other">;</span> <span class="Identifier">monthday</span><span class="Other">:</span> <span class="Identifier">MonthdayRange</span><span class="Other">;</span>
+                      <span class="Identifier">zone</span><span class="Other">:</span> <span class="Identifier">Option</span><span class="Other">[</span><span class="Identifier">Timezone</span><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">none</span><span class="Other">(</span><span class="Identifier">Timezone</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <a href="nudates.html#MonthMonthday"><span class="Identifier">MonthMonthday</span></a> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     <p>Returns a new object of type <a class="reference external" href="#MonthMonthday">MonthMonthday</a>.</p>
@@ -440,14 +454,11 @@
   <dd>
     
     <strong>Returns:</strong><ul class="simple"><li>The n-th occurence of <tt class="docutils literal"><span class="pre"><span class="Operator">&lt;</span><span class="Identifier">weekday</span><span class="Operator">&gt;</span></span></tt> in the month that is defined by parameters <tt class="docutils literal"><span class="pre"><span class="Identifier">month</span></span></tt> and <tt class="docutils literal"><span class="pre"><span class="Identifier">year</span></span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre"><span class="Identifier">none</span><span class="Punctuation">(</span><span class="Identifier">MonthdayRange</span><span class="Punctuation">)</span></span></tt> if the search is unsuccessful.</li>
+<li><tt class="docutils literal"><span class="pre"><span class="Identifier">none</span><span class="Punctuation">(</span><span class="Identifier">MonthdayRange</span><span class="Punctuation">)</span></span></tt> if the search is unsuccessful (this is particularly the case if <tt class="docutils literal"><span class="pre"><span class="Identifier">nthOccurence</span> <span class="Operator">==</span> <span class="DecNumber">0</span> <span class="Keyword">or</span> <span class="Identifier">abs</span><span class="Punctuation">(</span><span class="Identifier">nthOccurrence</span><span class="Punctuation">)</span> <span class="Operator">&gt;</span> <span class="DecNumber">5</span></span></tt>).</li>
 </ul>
 <p><strong>Notes:</strong></p>
 <ul class="simple"><li>If <tt class="docutils literal"><span class="pre"><span class="Identifier">nthOccurrence</span> <span class="Operator">&gt;</span> <span class="DecNumber">0</span></span></tt> then counting is performed from the beginning of the month.</li>
 <li>If <tt class="docutils literal"><span class="pre"><span class="Identifier">nthOccurrence</span> <span class="Operator">&lt;</span> <span class="DecNumber">0</span></span></tt> then counting is performed from the end of the month.</li>
-</ul>
-<p><strong>Assertions:</strong></p>
-<ul class="simple"><li><a class="reference external" href="https://nim-lang.org/docs/assertions.html#doAssert.t%2Cuntyped%2Cstring">doAssert</a>: <tt class="docutils literal"><span class="pre"><span class="DecNumber">0</span> <span class="Operator">&lt;</span> <span class="Identifier">abs</span><span class="Punctuation">(</span><span class="Identifier">nthOccurrence</span><span class="Punctuation">)</span> <span class="Operator">&lt;</span> <span class="DecNumber">6</span></span></tt></li>
 </ul>
 
 <p><strong class="examples_text">Example:</strong></p>
@@ -471,8 +482,8 @@
 </div>
 <div id="timeZone-procs-all">
   <div id="timeZone,MonthMonthday">
-  <dt><pre><span class="Keyword">proc</span> <a href="#timeZone%2CMonthMonthday"><span class="Identifier">timeZone</span></a><span class="Other">(</span><span class="Identifier">mmd</span><span class="Other">:</span> <a href="nudates.html#MonthMonthday"><span class="Identifier">MonthMonthday</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Timezone</span> {.<span class="Identifier">inline</span><span class="Other">,</span> <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#timeZone%2CMonthMonthday"><span class="Identifier">timeZone</span></a><span class="Other">(</span><span class="Identifier">mmd</span><span class="Other">:</span> <a href="nudates.html#MonthMonthday"><span class="Identifier">MonthMonthday</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Option</span><span class="Other">[</span><span class="Identifier">Timezone</span><span class="Other">]</span> {.<span class="Identifier">inline</span><span class="Other">,</span> <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Returns the <tt class="docutils literal"><span class="pre"><span class="Identifier">time</span> <span class="Identifier">zone</span></span></tt> of the <tt class="docutils literal"><span class="pre"><span class="Identifier">mmd</span></span></tt> object.
@@ -777,7 +788,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2024-05-12 18:56:03 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2024-05-13 09:45:50 UTC</small>
       </div>
     </div>
   </div>
