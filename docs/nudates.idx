@@ -3,7 +3,7 @@ nim	MonthMonthday	nudates.html#MonthMonthday	object MonthMonthday		94
 nim	month	nudates.html#month,MonthMonthday	proc month(mmd: MonthMonthday): Month		107
 nim	monthday	nudates.html#monthday,MonthMonthday	proc monthday(mmd: MonthMonthday): MonthdayRange		110
 nim	timeZone	nudates.html#timeZone,MonthMonthday	proc timeZone(mmd: MonthMonthday): Option[Timezone]		113
-nim	newMonthMonthday	nudates.html#newMonthMonthday,Month,MonthdayRange,Option[Timezone]	proc newMonthMonthday(month: Month; monthday: MonthdayRange;\n                 zone: Option[Timezone] = none(Timezone)): MonthMonthday		117
+nim	newMonthMonthday	nudates.html#newMonthMonthday,Month,MonthdayRange,Option[Timezone]	proc newMonthMonthday(month: Month = mJan; monthday: MonthdayRange = 1;\n                 zone: Option[Timezone] = none(Timezone)): MonthMonthday		117
 nim	cmpDate	nudates.html#cmpDate,MonthMonthday,MonthMonthday	proc cmpDate(dt1, dt2: MonthMonthday): int		146
 nim	cmpDate	nudates.html#cmpDate,DateTime,DateTime	proc cmpDate(dt1, dt2: DateTime): int		178
 nim	cmpDate	nudates.html#cmpDate,DateTime,MonthMonthday	proc cmpDate(dt1: DateTime; dt2: MonthMonthday): int		206

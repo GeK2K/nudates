@@ -99,9 +99,9 @@ type
       - Labour Day, May 1st.
       - Christmas Day, December 25th.
     ]##
-    month: Month 
-    monthday: MonthdayRange
-    zone: Option[TimeZone]
+    month: Month = mJan
+    monthday: MonthdayRange = 1.MonthdayRange
+    zone: Option[TimeZone] = none(TimeZone)
 
 
 proc  month*(mmd: MonthMonthday): Month {.inline.} = mmd.month
@@ -114,7 +114,7 @@ proc  timeZone*(mmd: MonthMonthday): Option[TimeZone] {.inline.} = mmd.zone
   ## Returns the `time zone` of the `mmd` object.
 
 
-proc  newMonthMonthday*(month: Month, monthday: MonthdayRange,
+proc  newMonthMonthday*(month: Month = mJan, monthday: MonthdayRange = 1,
                         zone: Option[TimeZone] = none(TimeZone)): 
                        MonthMonthday =
   ##[
