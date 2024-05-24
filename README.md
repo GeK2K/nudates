@@ -72,8 +72,9 @@ doAssert:  dt3  > dt1  and  dt3  >> dt1
 ```
 
 
-## Documentation
+## Used in
   - [businessdays](https://github.com/GeK2K/businessdays)
+
 
 ## Documentation
 
