@@ -22,10 +22,6 @@ have defined new comparison operators (`~==`, `!~==`, `<<`, `<<~==`, `>>`,
 information (hours, minutes, seconds, etc.) into account in their processing 
 (the reader will find a justification of the notations adopted in the 
 respective documentation of these operators).
-
-We have decided to also make the following alternatives available 
-to the user: `eq`, `neq`, `lt`, `leq`, `gt`, `geq`. All these 
-possibilities are detailed in the documentation below.
 ]##
 
 
@@ -34,10 +30,10 @@ runnableExamples:
   let dt2 = dateTime(2011, mSep, 18, 5)  # 2011-09-18T:05:00:00
   let dt3 = dateTime(2011, mOct, 18, 1)  # 2011-10-18T:01:00:00
 
-  doAssert:  dt1 == dt1  and  dt1 ~== dt1  # same as: dt1.eq(dt1)
-  doAssert:  dt1 != dt2  and  dt1 ~== dt2  # same as: dt1.eq(dt2)
-  doAssert:  dt1  < dt3  and  dt1  << dt3  # same as: dt1.lt(dt2) 
-  doAssert:  dt3  > dt1  and  dt3  >> dt1  # same as: dt1.gt(dt2)
+  doAssert:  dt1 == dt1  and  dt1 ~== dt1
+  doAssert:  dt1 != dt2  and  dt1 ~== dt2
+  doAssert:  dt1  < dt3  and  dt1  << dt3 
+  doAssert:  dt3  > dt1  and  dt3  >> dt1
 
 
 ##[
@@ -68,9 +64,9 @@ runnableExamples:
   let dt3 = dateTime(2020, mFeb, 18)  # 2020-02-18T:00:00:00
   let dt4 = dateTime(2011, mOct, 11)  # 2021-10-11T:00:00:00
 
-  doAssert:  dt1 ~== dt2  # same as: dt1.eq(dt2)
-  doAssert:  dt1  >> dt3  # same as: dt1.gt(dt3)
-  doAssert:  dt1  << dt4  # same as: dt1.lt(dt4)
+  doAssert:  dt1 ~== dt2
+  doAssert:  dt1  >> dt3
+  doAssert:  dt1  << dt4
 
 
 ##[
@@ -78,7 +74,7 @@ runnableExamples:
 
 We encourage the user to browse the documentation to discover 
 the few other features that exist. We will only mention here the 
-`searchMonthday <#searchMonthday,int,Month,WeekDay,int>`_ `proc`.
+`nthWeekday <#nthWeekday,int,Month,WeekDay,int>`_ `proc`.
 ]##
 
 
@@ -302,26 +298,6 @@ proc  cmpDateNoZero*(dt1: DateTime | MonthMonthday,
   result = if dt1.cmpDate(dt2) == -1: -1 else: 1
 
 
-template  eq*(dt1: DateTime | MonthMonthday, 
-              dt2: DateTime | MonthMonthday): untyped =
-  ##[ 
-  A shortcut for `dt1.cmpDate(dt2) == 0`, 
-  meaning `dt1` is `equal to` `dt2`.
-
-  **Notes:**
-
-  There are several ways to express the 
-  relationship `dt1` is `equal to` `dt2`.
-    - `dt1.cmpDate(dt2) == 0`
-    - `dt1.eq(dt2)`
-    - `dt1 ~== dt2`
-
-  **See also:**
-    - `~==` template
-  ]##
-  dt1.cmpDate(dt2) == 0
-
-
 template  `~==`*(dt1: DateTime | MonthMonthday, 
                  dt2: DateTime | MonthMonthday): untyped = 
   ##[ 
@@ -329,41 +305,17 @@ template  `~==`*(dt1: DateTime | MonthMonthday,
   meaning `dt1` is `equal to` `dt2`.
 
   **Notes:**
-    - There are several ways to express the 
+    - There are therefore two ways of expressing the 
       relationship `dt1` is `equal to` `dt2`.
         - `dt1.cmpDate(dt2) == 0`
         - `dt1 ~== dt2`
-        - `dt1.eq(dt2)`
     - Intra-day information (hours, minutes, seconds, etc.) are not taken
       into account. The equality mentioned here is therefore less demanding
       than that of the `DateTime` type (`dt1 == dt2` implies `dt1 ~== dt2` 
       but the opposite is not true). We can speak of quasi-equality, hence 
       the notation chosen: `~==` rather than `==`.
-
-  **See also:**
-    - `eq` template
   ]##
   dt1.cmpDate(dt2) == 0
-
-
-template  neq*(dt1: DateTime | MonthMonthday, 
-               dt2: DateTime | MonthMonthday): untyped = 
-  ##[ 
-  A shortcut for `dt1.cmpDate(dt2) != 0`, 
-  meaning `dt1` is `not equal to` `dt2`.
-
-  **Notes:**
-
-  There are several ways to express the 
-  relationship `dt1` is `not equal to` `dt2`.
-    - `dt1.cmpDate(dt2) != 0`
-    - `dt1.neq(dt2)`
-    - `dt1 !~== dt2`
-
-  **See also:**
-    - `!~==` template
-  ]##
-  dt1.cmpDate(dt2) != 0
 
 
 template  `!~==`*(dt1: DateTime | MonthMonthday, 
@@ -373,39 +325,17 @@ template  `!~==`*(dt1: DateTime | MonthMonthday,
   meaning `dt1` is `not equal to` `dt2`.
 
   **Notes:**
-    - There are several ways to express the 
+    - There are therefore two ways of expressing the
       relationship `dt1` is `not equal to` `dt2`.
         - `dt1.cmpDate(dt2) != 0`
         - `dt1 !~== dt2`
-        - `dt1.neq(dt2)`
     - The`!~==` operator is the negation of the 
       `~==` operator, hence the notation adopted.
 
   **See also:**
-    - `neq` template
     - `~==` template
   ]##
   dt1.cmpDate(dt2) != 0
-
-
-template  lt*(dt1: DateTime | MonthMonthday, 
-              dt2: DateTime | MonthMonthday): untyped =
-  ##[ 
-  A shortcut for `dt1.cmpDate(dt2) == -1`,
-  meaning `dt1` is `less than` `dt2`.
-
-  **Notes:**
-
-  There are several ways to express the 
-  relationship `dt1` is `less than` `dt2`.
-    - `dt1.cmpDate(dt2) == -1`
-    - `dt1.lt(dt2)`
-    - `dt1 << dt2`
-
-  **See also:**
-    - `<<` template
-  ]##
-  dt1.cmpDate(dt2) == -1
 
 
 template  `<<`*(dt1: DateTime | MonthMonthday, 
@@ -415,40 +345,16 @@ template  `<<`*(dt1: DateTime | MonthMonthday,
   meaning `dt1` is `less than` `dt2`.
 
   **Notes:**
-    - There are several ways to express the 
+    - There are therefore two ways of expressing the 
       relationship `dt1` is `less than` `dt2`.
         - `dt1.cmpDate(dt2) == -1`
         - `dt1 << dt2`
-        - `dt1.lt(dt2)`
     - Intra-day information (hours, minutes, seconds, etc.) are not taken 
       into account. The inequality mentioned here is therefore more demanding 
       than that of the `DateTime` type (`dt1 << dt2` implies `dt1 < dt2` but 
       the opposite is not true). Hence the notation chosen: `<<` rather than `<`.
-
-  **See also:**
-    - `lt` template
   ]##
   dt1.cmpDate(dt2) == -1
-
-
-template  gt*(dt1: DateTime | MonthMonthday, 
-              dt2: DateTime | MonthMonthday): untyped =
-  ##[ 
-  A shortcut for `dt1.cmpDate(dt2) == 1`,
-  meaning `dt1` is `greater than` `dt2`.
-
-  **Notes:**
-
-  There are several ways to express the 
-  relationship `dt1` is `greater than` `dt2`.
-    - `dt1.cmpDate(dt2) == 1`
-    - `dt1.gt(dt2)`
-    - `dt1 >> dt2`
-
-  **See also:**
-    - `>>` template
-  ]##
-  dt1.cmpDate(dt2) == 1
 
 
 template  `>>`*(dt1: DateTime | MonthMonthday, 
@@ -458,40 +364,16 @@ template  `>>`*(dt1: DateTime | MonthMonthday,
   meaning `dt1` is `greater than` `dt2`.
 
   **Notes:**
-    - There are several ways to express the 
+    - There are therefore two ways of expressing the
       relationship `dt1` is `greater than` `dt2`.
         - `dt1.cmpDate(dt2) == 1`
         - `dt1.gt(dt2)`
-        - `dt1 >> dt2`
     - Intra-day information (hours, minutes, seconds, etc.) are not taken 
       into account. The inequality mentioned here is therefore more demanding 
       than that of the `DateTime` type (`dt1 >> dt2` implies `dt1 > dt2` but 
       the opposite is not true). Hence the notation chosen: `>>` rather than `>`.
-
-  **See also:**
-    - `gt` template
   ]##
   dt1.cmpDate(dt2) == 1
-
-
-template  leq*(dt1: DateTime | MonthMonthday, 
-               dt2: DateTime | MonthMonthday): untyped =
-  ##[ 
-  A shortcut for `dt1.cmpDate(dt2) <= 0`,
-  meaning `dt1` is `less than or equal to` `dt2`.
-
-  **Notes:**
-
-  There are several ways to express the 
-  relationship `dt1` is `less than or equal to` `dt2`.
-    - `dt1.cmpDate(dt2) <= 0`
-    - `dt1.leq(dt2)`
-    - `dt1 <<~== dt2`
-
-  **See also:**
-    - `<<~==` template
-  ]##
-  dt1.cmpDate(dt2) <= 0
 
 
 template  `<<~==`*(dt1: DateTime | MonthMonthday, 
@@ -501,38 +383,14 @@ template  `<<~==`*(dt1: DateTime | MonthMonthday,
   meaning `dt1` is `less than or equal to` `dt2`.
 
   **Notes:**
-    - There are several ways to express the 
+    - There are therefore two ways of expressing the 
       relationship `dt1` is `less than or equal to` `dt2`.
         - `dt1.cmpDate(dt2) <= 0`
         - `dt1 <<~== dt2`
-        - `dt1.leq(dt2)`
     - The operator `<<~==` is the combination of the operators 
       `<<` (less than) and `~==` (equal to).
-
-  **See also:**
-    - `leq` template
   ]##
   dt1.cmpDate(dt2) <= 0
-
-
-template  geq*(dt1: DateTime | MonthMonthday, 
-               dt2: DateTime | MonthMonthday): untyped =
-  ##[ 
-  A shortcut for `dt1.cmpDate(dt2) >= 0`,
-  meaning `dt1` is `greater than or equal to` `dt2`.
-
-  **Notes:**
-
-  There are several ways to express the 
-  relationship `dt1` is `greater than or equal to` `dt2`.
-    - `dt1.cmpDate(dt2) >= 0`
-    - `dt1.geq(dt2)`
-    - `dt1 >>~== dt2`
-
-  **See also:**
-    - `>>~==` template
-  ]##
-  dt1.cmpDate(dt2) >= 0
 
 
 template  `>>~==`*(dt1: DateTime | MonthMonthday, 
@@ -542,16 +400,13 @@ template  `>>~==`*(dt1: DateTime | MonthMonthday,
   meaning `dt1` is `greater than or equal to` `dt2`.
 
   **Notes:**
-    - There are several ways to express the 
+    - There are therefore two ways of expressing the
       relationship `dt1` is `greater than or equal to` `dt2`.
         - `dt1.cmpDate(dt2) >= 0`
         - `dt1 >>~== dt2`
         - `dt1.geq(dt2)`
     - The operator `>>~==` is the combination of the operators 
       `>>` (greater than) and `~==` (equal to).
-
-  **See also:**
-    - `geq` template
   ]##
   dt1.cmpDate(dt2) >= 0
 
@@ -585,8 +440,8 @@ proc  isSaturdayOrSunday*(dt: DateTime): bool {.inline.} =
   getDayOfWeek(dt) in {dSat, dSun}
 
 
-func  searchMonthday*(year: int, month: Month, weekday: Weekday, 
-                      nthOccurrence: int): Option[MonthdayRange] =
+func  nthWeekday*(year: int, month: Month, weekday: Weekday, 
+                  nthOccurrence: int): Option[MonthdayRange] =
   ##[ 
   **Returns:** 
     - The n-th occurence of `<weekday>` in the month  
@@ -602,18 +457,18 @@ func  searchMonthday*(year: int, month: Month, weekday: Weekday,
   
   runnableExamples:
     # search from the beginning of the month
-    doAssert:  searchMonthday(2023, mAug, dMon, 1).get == 7.MonthdayRange
-    doAssert:  searchMonthday(2023, mAug, dMon, 3).get == 21.MonthdayRange
-    doAssert:  searchMonthday(2023, mAug, dMon, 5).isNone
-    doAssert:  searchMonthday(2023, mAug, dTue, 5).get == 29.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dMon, 1).get == 7.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dMon, 3).get == 21.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dMon, 5).isNone
+    doAssert:  nthWeekday(2023, mAug, dTue, 5).get == 29.MonthdayRange
     # search from the end of the month
-    doAssert:  searchMonthday(2023, mAug, dMon, -1).get == 28.MonthdayRange
-    doAssert:  searchMonthday(2023, mAug, dMon, -3).get == 14.MonthdayRange
-    doAssert:  searchMonthday(2023, mAug, dMon, -5).isNone
-    doAssert:  searchMonthday(2023, mAug, dWed, -1).get == 30.MonthdayRange
-    doAssert:  searchMonthday(2023, mAug, dThu, -5).get == 3.MonthdayRange
-    doAssert:  searchMonthday(2023, mAug, dSat, -1).get == 26.MonthdayRange
-    doAssert:  searchMonthday(2023, mAug, dSat, -3).get == 12.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dMon, -1).get == 28.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dMon, -3).get == 14.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dMon, -5).isNone
+    doAssert:  nthWeekday(2023, mAug, dWed, -1).get == 30.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dThu, -5).get == 3.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dSat, -1).get == 26.MonthdayRange
+    doAssert:  nthWeekday(2023, mAug, dSat, -3).get == 12.MonthdayRange
 
   if nthOccurrence == 0 or abs(nthOccurrence) > 5:
     return none(MonthdayRange)
