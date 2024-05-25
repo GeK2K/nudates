@@ -440,19 +440,18 @@ proc  isSaturdayOrSunday*(dt: DateTime): bool {.inline.} =
   getDayOfWeek(dt) in {dSat, dSun}
 
 
-func  nthWeekday*(year: int, month: Month, weekday: Weekday, 
-                  nthOccurrence: int): Option[MonthdayRange] =
+func  nthWeekday*(year: int, month: Month, weekday: Weekday, n: int): 
+                 Option[MonthdayRange] =
   ##[ 
   **Returns:** 
     - The n-th occurence of `<weekday>` in the month  
       that is defined by parameters `month` and `year`.
     - `none(MonthdayRange)` if the search is unsuccessful
-      (this is particularly the case if 
-      `nthOccurence == 0 or abs(nthOccurrence) > 5`).
+      (this is particularly the case if `n == 0 or abs(n) > 5`).
 
   **Notes:**
-    - If `nthOccurrence > 0` then counting is performed from the beginning of the month.
-    - If `nthOccurrence < 0` then counting is performed from the end of the month.
+    - If `n > 0` then counting is performed from the beginning of the month.
+    - If `n < 0` then counting is performed from the end of the month.
   ]##
   
   runnableExamples:
@@ -470,28 +469,28 @@ func  nthWeekday*(year: int, month: Month, weekday: Weekday,
     doAssert:  nthWeekday(2023, mAug, dSat, -1).get == 26.MonthdayRange
     doAssert:  nthWeekday(2023, mAug, dSat, -3).get == 12.MonthdayRange
 
-  if nthOccurrence == 0 or abs(nthOccurrence) > 5:
+  if n == 0 or abs(n) > 5:
     return none(MonthdayRange)
 
   let weekday1st = getDayOfWeek(1.MonthdayRange, month, year)
   let daysInMonth = getDaysInMonth(month, year)
   let weekdayLast = getDayOfWeek(daysInMonth.MonthdayRange, month, year)
 
-  if nthOccurrence > 0:  # counting from the beginning of the month
+  if n > 0:  # counting from the beginning of the month
     let deltaWeekday = weekday.ord - weekday1st.ord
     let monthday = block:
-      if deltaWeekday >= 0:  deltaWeekday + 7 * (nthOccurrence - 1) + 1
-      else:  deltaWeekday + 7 * nthOccurrence + 1
+      if deltaWeekday >= 0:  deltaWeekday + 7 * (n - 1) + 1
+      else:  deltaWeekday + 7 * n + 1
     if 1 <= monthday and monthday <= daysInMonth:  
       result = some(monthday.MonthdayRange)
     else:  
       result = none(MonthdayRange)
   else:  # counting from the end of the month
     let deltaWeekday = weekdayLast.ord - weekday.ord
-    let nthOccurr = -nthOccurrence
+    let mn = -n  # minus n
     let monthday = block:
-      if deltaWeekday >= 0:  daysInMonth - deltaWeekday - 7*(nthOccurr-1)
-      else:  daysInMonth - deltaWeekday - 7*nthOccurr
+      if deltaWeekday >= 0:  daysInMonth - deltaWeekday - 7*(mn-1)
+      else:  daysInMonth - deltaWeekday - 7*mn
     if 1 <= monthday and monthday <= daysInMonth:  
       result = some(monthday.MonthdayRange)
     else:  

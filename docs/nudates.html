@@ -100,8 +100,8 @@
 
 </ul>
 <ul class="simple nested-toc-section">nthWeekday
-  <li><a class="reference" href="#nthWeekday%2Cint%2CMonth%2CWeekDay%2Cint" title="nthWeekday(year: int; month: Month; weekday: WeekDay; nthOccurrence: int): Option[
-    MonthdayRange]">nthWeekday(year: int; month: Month; weekday: WeekDay; nthOccurrence: int): Option[
+  <li><a class="reference" href="#nthWeekday%2Cint%2CMonth%2CWeekDay%2Cint" title="nthWeekday(year: int; month: Month; weekday: WeekDay; n: int): Option[
+    MonthdayRange]">nthWeekday(year: int; month: Month; weekday: WeekDay; n: int): Option[
     MonthdayRange]</a></li>
 
 </ul>
@@ -423,16 +423,16 @@
 </div>
 <div id="nthWeekday-procs-all">
   <div id="nthWeekday,int,Month,WeekDay,int">
-  <dt><pre><span class="Keyword">func</span> <a href="#nthWeekday%2Cint%2CMonth%2CWeekDay%2Cint"><span class="Identifier">nthWeekday</span></a><span class="Other">(</span><span class="Identifier">year</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">month</span><span class="Other">:</span> <span class="Identifier">Month</span><span class="Other">;</span> <span class="Identifier">weekday</span><span class="Other">:</span> <span class="Identifier">WeekDay</span><span class="Other">;</span> <span class="Identifier">nthOccurrence</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Option</span><span class="Other">[</span>
+  <dt><pre><span class="Keyword">func</span> <a href="#nthWeekday%2Cint%2CMonth%2CWeekDay%2Cint"><span class="Identifier">nthWeekday</span></a><span class="Other">(</span><span class="Identifier">year</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">month</span><span class="Other">:</span> <span class="Identifier">Month</span><span class="Other">;</span> <span class="Identifier">weekday</span><span class="Other">:</span> <span class="Identifier">WeekDay</span><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Option</span><span class="Other">[</span>
     <span class="Identifier">MonthdayRange</span><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     <strong>Returns:</strong><ul class="simple"><li>The n-th occurence of <tt class="docutils literal"><span class="pre"><span class="Operator">&lt;</span><span class="Identifier">weekday</span><span class="Operator">&gt;</span></span></tt> in the month that is defined by parameters <tt class="docutils literal"><span class="pre"><span class="Identifier">month</span></span></tt> and <tt class="docutils literal"><span class="pre"><span class="Identifier">year</span></span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre"><span class="Identifier">none</span><span class="Punctuation">(</span><span class="Identifier">MonthdayRange</span><span class="Punctuation">)</span></span></tt> if the search is unsuccessful (this is particularly the case if <tt class="docutils literal"><span class="pre"><span class="Identifier">nthOccurence</span> <span class="Operator">==</span> <span class="DecNumber">0</span> <span class="Keyword">or</span> <span class="Identifier">abs</span><span class="Punctuation">(</span><span class="Identifier">nthOccurrence</span><span class="Punctuation">)</span> <span class="Operator">&gt;</span> <span class="DecNumber">5</span></span></tt>).</li>
+<li><tt class="docutils literal"><span class="pre"><span class="Identifier">none</span><span class="Punctuation">(</span><span class="Identifier">MonthdayRange</span><span class="Punctuation">)</span></span></tt> if the search is unsuccessful (this is particularly the case if <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span> <span class="Operator">==</span> <span class="DecNumber">0</span> <span class="Keyword">or</span> <span class="Identifier">abs</span><span class="Punctuation">(</span><span class="Identifier">n</span><span class="Punctuation">)</span> <span class="Operator">&gt;</span> <span class="DecNumber">5</span></span></tt>).</li>
 </ul>
 <p><strong>Notes:</strong></p>
-<ul class="simple"><li>If <tt class="docutils literal"><span class="pre"><span class="Identifier">nthOccurrence</span> <span class="Operator">&gt;</span> <span class="DecNumber">0</span></span></tt> then counting is performed from the beginning of the month.</li>
-<li>If <tt class="docutils literal"><span class="pre"><span class="Identifier">nthOccurrence</span> <span class="Operator">&lt;</span> <span class="DecNumber">0</span></span></tt> then counting is performed from the end of the month.</li>
+<ul class="simple"><li>If <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span> <span class="Operator">&gt;</span> <span class="DecNumber">0</span></span></tt> then counting is performed from the beginning of the month.</li>
+<li>If <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span> <span class="Operator">&lt;</span> <span class="DecNumber">0</span></span></tt> then counting is performed from the end of the month.</li>
 </ul>
 
 <p><strong class="examples_text">Example:</strong></p>
@@ -615,7 +615,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2024-05-24 11:50:43 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2024-05-25 07:47:14 UTC</small>
       </div>
     </div>
   </div>
