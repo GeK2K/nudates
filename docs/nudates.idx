@@ -1,25 +1,25 @@
 nimTitle	nudates	nudates.html	module src/nudates		0
-nim	MonthMonthday	nudates.html#MonthMonthday	object MonthMonthday		90
-nim	month	nudates.html#month,MonthMonthday	proc month(mmd: MonthMonthday): Month		103
-nim	monthday	nudates.html#monthday,MonthMonthday	proc monthday(mmd: MonthMonthday): MonthdayRange		106
-nim	timeZone	nudates.html#timeZone,MonthMonthday	proc timeZone(mmd: MonthMonthday): Option[Timezone]		109
-nim	newMonthMonthday	nudates.html#newMonthMonthday,Month,MonthdayRange,Option[Timezone]	proc newMonthMonthday(month: Month = mJan; monthday: MonthdayRange = 1;\n                 zone: Option[Timezone] = none(Timezone)): MonthMonthday		113
-nim	cmpDate	nudates.html#cmpDate,MonthMonthday,MonthMonthday	proc cmpDate(dt1, dt2: MonthMonthday): int		142
-nim	cmpDate	nudates.html#cmpDate,DateTime,DateTime	proc cmpDate(dt1, dt2: DateTime): int		174
-nim	cmpDate	nudates.html#cmpDate,DateTime,MonthMonthday	proc cmpDate(dt1: DateTime; dt2: MonthMonthday): int		202
-nim	cmpDate	nudates.html#cmpDate.t,MonthMonthday,DateTime	template cmpDate(dt1: MonthMonthday; dt2: DateTime): untyped		218
-nim	cmpDateNoZero	nudates.html#cmpDateNoZero,,	proc cmpDateNoZero(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): int		228
-nim	`~==`	nudates.html#~==.t,,	template `~==`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		301
-nim	`!~==`	nudates.html#!~==.t,,	template `!~==`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		321
-nim	`<<`	nudates.html#<<.t,,	template `<<`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		341
-nim	`>>`	nudates.html#>>.t,,	template `>>`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		360
-nim	`<<~==`	nudates.html#<<~==.t,,	template `<<~==`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		379
-nim	`>>~==`	nudates.html#>>~==.t,,	template `>>~==`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		396
-nim	isLastDayOfFebruary	nudates.html#isLastDayOfFebruary,DateTime	proc isLastDayOfFebruary(dt: DateTime): bool		416
-nim	getDayOfWeek	nudates.html#getDayOfWeek,DateTime	proc getDayOfWeek(dt: DateTime): WeekDay		433
-nim	isSaturdayOrSunday	nudates.html#isSaturdayOrSunday,DateTime	proc isSaturdayOrSunday(dt: DateTime): bool		438
-nim	nthWeekday	nudates.html#nthWeekday,int,Month,WeekDay,int	proc nthWeekday(year: int; month: Month; weekday: WeekDay; n: int): Option[\n    MonthdayRange]		443
-nimgrp	cmpdate	nudates.html#cmpDate-procs-all	proc		142
+nim	MonthMonthday	nudates.html#MonthMonthday	object MonthMonthday		80
+nim	month	nudates.html#month,MonthMonthday	proc month(mmd: MonthMonthday): Month		93
+nim	monthday	nudates.html#monthday,MonthMonthday	proc monthday(mmd: MonthMonthday): MonthdayRange		96
+nim	timeZone	nudates.html#timeZone,MonthMonthday	proc timeZone(mmd: MonthMonthday): Option[Timezone]		99
+nim	newMonthMonthday	nudates.html#newMonthMonthday,Month,MonthdayRange,Option[Timezone]	proc newMonthMonthday(month: Month = mJan; monthday: MonthdayRange = 1;\n                 zone: Option[Timezone] = none(Timezone)): MonthMonthday		103
+nim	cmpDate	nudates.html#cmpDate,MonthMonthday,MonthMonthday	proc cmpDate(dt1, dt2: MonthMonthday): int		132
+nim	cmpDate	nudates.html#cmpDate,DateTime,DateTime	proc cmpDate(dt1, dt2: DateTime): int		164
+nim	cmpDate	nudates.html#cmpDate,DateTime,MonthMonthday	proc cmpDate(dt1: DateTime; dt2: MonthMonthday): int		192
+nim	cmpDate	nudates.html#cmpDate.t,MonthMonthday,DateTime	template cmpDate(dt1: MonthMonthday; dt2: DateTime): untyped		208
+nim	cmpDateNoZero	nudates.html#cmpDateNoZero,,	proc cmpDateNoZero(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): int		218
+nim	`~==`	nudates.html#~==.t,,	template `~==`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		291
+nim	`!~==`	nudates.html#!~==.t,,	template `!~==`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		311
+nim	`<<`	nudates.html#<<.t,,	template `<<`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		331
+nim	`>>`	nudates.html#>>.t,,	template `>>`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		350
+nim	`<<~==`	nudates.html#<<~==.t,,	template `<<~==`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		369
+nim	`>>~==`	nudates.html#>>~==.t,,	template `>>~==`(dt1: DateTime | MonthMonthday; dt2: DateTime | MonthMonthday): untyped		386
+nim	isLastDayOfFebruary	nudates.html#isLastDayOfFebruary,DateTime	proc isLastDayOfFebruary(dt: DateTime): bool		406
+nim	getDayOfWeek	nudates.html#getDayOfWeek,DateTime	proc getDayOfWeek(dt: DateTime): WeekDay		423
+nim	isSaturdayOrSunday	nudates.html#isSaturdayOrSunday,DateTime	proc isSaturdayOrSunday(dt: DateTime): bool		428
+nim	nthWeekday	nudates.html#nthWeekday,int,Month,WeekDay,int	proc nthWeekday(year: int; month: Month; weekday: WeekDay; n: int): Option[\n    MonthdayRange]		433
+nimgrp	cmpdate	nudates.html#cmpDate-procs-all	proc		132
 heading	DateTime vs. Date	nudates.html#datetime-vsdot-date	  DateTime vs. Date		0
 heading	MonthMonthday type	nudates.html#monthmonthday-type	  MonthMonthday type		0
 heading	Other tools	nudates.html#other-tools	  Other tools		0

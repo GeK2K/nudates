@@ -37,16 +37,6 @@ runnableExamples:
 
 
 ##[
-**Notes:**
-
-The user has the possibility to work without the functionalities 
-which are made available here. For example by ensuring that all 
-intra-day information is systematically created with their default 
-values and is never modified; or by setting them to 0 before using 
-the default comparison operators of the `times` module. *Personally 
-I would not favor any of these choices*.
-
-
 ## MonthMonthday type
 
 Sometimes we deal with special dates which do not vary from 
